@@ -1,0 +1,89 @@
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0f172a;
+  color: #ccd6f6;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1000px;
+  width: 90%;
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+header a {
+  color: #64ffda;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  color: #ccd6f6;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #112240;
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+  font-size: 1rem;
+}
+
+th {
+  color: white;
+  font-weight: bold;
+}
+
+td {
+  border-bottom: 1px solid #233554;
+}
+
+a {
+  color: #5eead4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Tags Styling */
+.tag {
+  display: inline-block;
+  background-color: #2dd4bf1a;
+  color: #e2e8f0;
+  /* padding: 5px 10px; */
+  /* border-radius: 20px; */
+  font-size: 0.8rem;
+  margin: 0 5px 5px 0;
+
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem;
+}
