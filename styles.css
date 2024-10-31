@@ -127,7 +127,7 @@ nav a:hover .nav-line {
 main {
     display: flex;
     flex-direction: column;
-    gap: 6rem;
+    gap: 4rem;
 }
 
 section {

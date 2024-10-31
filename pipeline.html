@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brian Web Portfolio</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="dev.css" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,9 +24,9 @@
         <!-- <a href="index.html"><h1>Brian O. Gwayi</h1></a> -->
         <a href="index.html" style="color: whitesmoke;">&larr; Brian O. Gwayi</a>
         <h4>Content</h4>
-        <p>
+        <!-- <p>
             I use data not just to inform, but to inspire action and innovation, contributing to solutions that truly make a difference.
-        </p>
+        </p> -->
         <nav>
             <a class="anchor-text" href="#Architecture Planning">
                 <div class="nav-line"></div>
@@ -57,20 +58,102 @@
             <div class="about-contents">
                 <h4>Architecture Planning</h4>
                 <p>
-                    The goal is to build a pipeline that pulls data from PostgreSQL database, transforms it, and loads it into a data warehouse (Azure Synapse Analytics | BigQuery) for analytics and reporting.
+                    The goal is to build a pipeline that pulls data from PostgreSQL database, transforms it, and loads it into a data warehouse (Azure Synapse Analytics | BigQuery) for analytics and reporting.  The data pipeline will consist of two main phases:
                 </p>
+                <ul>
+                    <li>Extraction: pull data from PostgreSQL</li>
+                    <li>Load: load data into BigQuery</li>
+                    <li>Transform: process or clean data as required</li>
+                   </ul> 
+                <h4>Key Components</h4>
+                <ul>
+                    <li>Source Database: PostgreSQL</li>
+                    <li>Destination: BigQuery</li>
+                    <li>Script: Python</li>
+                    <li>Storage: Google Cloud Storage</li>
+                </ul>
             </div>
         </section>
 
         <section id="Data Ingestion">
-            <div class="sticky-header">
-                <h2 class="lightText">About</h2>
-            </div>
             <div class="about-contents">
                 <h4>Data Ingestion</h4>
+                <h4>Creating elt/etl user & granting permissions</h4>
                 <p>
-                    The goal is to build a pipeline that pulls data from PostgreSQL database, transforms it, and loads it into a data warehouse (Azure Synapse Analytics | BigQuery) for analytics and reporting.
+                    GRANT USAGE ON SCHEMA operations TO etl_b085954: grants the etl_b085954 user permission to access the operations schema. 
+                    GRANT SELECT ON ALL TABLES IN SCHEMA operations TO etl_b085954: grants the user read (SELECT) access to all tables in the operations schema.
                 </p>
+                <div class="code">
+                    <pre class="py-code">
+                        <code>
+                <span class="code-comment">1. Connect to PostgreSQL</span>
+                $ sudo -u postgres psql
+                <span class="code-comment">2. Create ETL/ELT User</span>
+                $ CREATE USER etl_b085954 WITH PASSWORD 'BO@859545';
+                <span class="code-comment">3. Grant Permissions</span>
+                $ GRANT USAGE ON SCHEMA operations TO etl_b085954;
+                $ GRANT SELECT ON ALL TABLES IN SCHEMA operations TO etl_b085954;
+                        </code>
+                    </pre>
+                </div>
+                <h4>config.yaml</h4>
+                <p>This configuration defines the source (PostgreSQL), destination (BigQuery), and logging setup for the pipeline.</p>
+                <pre class="code">
+					<code style="margin: 0; padding: 0;">
+		<span class="code-func">postgres:</span>
+			type: <span class="code-text">"postgresql"</span>
+			host: <span class="code-text">"localhost"</span>
+			port: <span class="brown-highlight">5432</span>
+			database: <span class="code-text">"postgres"</span>
+			user: <span class="code-text">"b085954"</span>
+			password: <span class="code-text">"@Brian"</span>
+			query: <span class="code-text">"SELECT * FROM sales"</span>
+
+		<span class="code-func">bigquery:</span>
+			project_id: <spam class="code-text">"adventureworks-431609"</spam>
+			dataset_id: <span class="code-text">"adw"</span>
+			table_id: <span class="code-text">"your_table"</span> 
+			credentials_json: <span class="code-text">"path/to/your/credentials.json"</span>
+
+		<span class="code-func">logging:</span>
+			level: <span class="code-text">"INFO"</span>
+			format: <span class="brown-highlight">"%(asctime)s - %(name)s - %(levelname)s - %(message)s"</span>
+			file: <span class="code-text">"pipeline.log"</span>
+			filemode: <span class="code-text">"a"</span>
+					</code>
+                </pre>
+                <h4>config loader</h4>
+                <pre class="code">
+                    <code style="margin: 0; padding: 0;">
+            <span class="py-method">import</span>  yaml
+
+            <span class="code-func">class</span> <span class="brown-highlight">ConfigLoader:</span>
+            <span class="code-func">def</span> <span class="brown-highlight">__init__</span> (<span class="py-method">self</span> , config_path=<span class="code-text">'config.yaml'</span>) -> <span class="py-method"> Dict:</span>
+                    <span class="py-method">self</span>.config_path = config_path
+                    <span class="py-method">self</span>.config = <span class="py-method">self</span>.load_config()
+
+            <span class="code-func">def</span> <span class="brown-highlight">load_config</span>(<span class="py-method">self</span>) -> <span class="py-method">None:</span>
+            <span class="code-text">
+            """
+            :loads configuration from a YAML file.
+            :param file_path: Path to the YAML configuration file
+            :return: Configuration dictionary
+            :raises FileNotFoundError: If the configuration file is not found
+            :raises yaml.YAMLError: If there's an issue parsing the YAML file
+            """
+            </span>
+            <span class="py-method">if</span> <span class="code-func">not</span> os.path.exists(self.config_path):
+            <span class="py-method">raise</span> FileNotFoundError(
+                f<span class="code-text">"Configuration file '{config_path}' not found."</span>)
+
+            <span class="py-method">with</span> open(<span class="py-method">self</span>.config_path, <span class="code-text">'r'</span>) as file:
+            <span class="py-method">try:</span>
+                config = yaml.safe_load(file)
+            <span class="py-method">except:</span> yaml.YAMLError as exc:
+                <span class="py-method">raise:</span> Exception(f<span class="code-text">"Error parsing YAML file: {exc}"</span>)
+            <span class="py-method">return</span> config
+                    </code>
+                </pre>
             </div>
         </section>
 
