@@ -169,6 +169,48 @@
         $ pip install -r requirements.txt
                     </code>
                 </pre>
+                <!-- PostgreSQL -->
+                 <h4>PostgreSQL.py</h4>
+                <pre class="code">
+                    <code class="code-font">
+        <span class="py-method">from</span> sqlalchemy <span class="py-method">import</span> create_engine
+        <span class="py-method">import</span> pandas<span class="py-method"> as</span> pd
+
+        <span class="code-func">class</span> <span class="brown-highlight">PostgreSQL</span>:
+
+            def __init__(self, config, logging):
+                self.config = config
+                self.logging = logging
+
+            <span class="code-func">def</span> <span class="brown-highlight">extract</span></span>(<span class="code-func">self</span>) -> <span class="py-method">pd.DataFrame:</span>
+                <span class="code-text">
+                """
+                :extracts data from a PostgreSQL database.
+                :param file_path: Path to the YAML configuration file
+                :return: pandas DataFrame
+                :raises ExceptionError: If the extraction fails
+                """</span> 
+
+                db_config = <span class="py-method">self</span>.config[<span class="code-text">'postgres'</span>]
+                <span class="py-method">try:</span> 
+                    engine_url =
+                        f<span class="code-text">"{db_config['type']}://{db_config['user']}:
+                        {db_config['password']}@"
+                        {db_config['host']}:
+                        {db_config['port']}/{db_config['database']}"
+                    </span> 
+                    engine = create_engine(engine_url)
+                    <span class="py-method">self</span>.logger.info(<span class="code-text">"Connecting to PostgreSQL database...</span>")
+                    <span class="code-func">with</span> engine.connect() as connection:
+                        <span class="py-method">self</span>.logger.info(<span class="code-text">"Executing query ..."</span>)
+                        df = pd.read_sql(db_config[<span class="code-text">'query'</span>], connection)
+                    <span class="py-method">self</span>.logger.info(f<span class="code-text">"Extracted</span> {len(df)} <span class="code-text">records from PostgreSQL database."</span>)
+                    <span class="py-method">return</span> df
+                <span class="py-method">except</span> Exception as <span class="py-method">e:</span> 
+                    <span class="py-method">self</span>.logger.error(f<span class="code-text">"PostgreSQL extraction failed: {e}"</span> )
+                    <span class="py-method">raise</span>
+                        </code>
+                    </pre>
             </div>
         </section>
 
