@@ -26,7 +26,7 @@ body {
 
 .code {
   /* background: #3b5daa; */
-  background: #B0C4DE;
+  background: #c7cfda;
   font-size: .8rem;
   border-radius: .4rem;
   color: #0f172a;
@@ -36,7 +36,36 @@ body {
   margin: auto 1.2rem ;
 }
 
+.project-header {
+  font-size: 2rem;
+  color: #ffffff;
+}
 
+/* code stylin */
+
+.code-comment {
+  color: #00d300;
+  font-size: 14px;
+}
+
+.py-method {
+  color:#ca10ca;
+}
+
+pre {
+  font: 100px;
+}
+
+.code-text {
+  color: rgb(231, 55, 55);
+}
+.code-func {
+  color: #077ae6;
+}
+
+.airflow-call {
+  color: #c7934e;
+}
 
 display: flex;
     border: 1px solid rgb(229, 229, 229);
