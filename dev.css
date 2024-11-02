@@ -26,10 +26,11 @@ body {
 
 .code {
   /* background: #3b5daa; */
-  background: #c7cfda;
+  /* background: #c7cfda; */
   font-size: .8rem;
   border-radius: .4rem;
-  color: #0f172a;
+  /* color: #0f172a; */
+  background-color: #ffffff;
 }
 
 .code {
