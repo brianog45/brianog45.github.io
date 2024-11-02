@@ -62,9 +62,9 @@
                     The goal is to build a pipeline that pulls data from PostgreSQL database, transforms it, and loads it into a data warehouse (Azure Synapse Analytics | BigQuery) for analytics and reporting.  The data pipeline will consist of two main phases:
                 </p>
                 <ul>
-                    <li>Extraction: pull data from PostgreSQL</li>
-                    <li>Load: load data into BigQuery</li>
-                    <li>Transform: process or clean data as required</li>
+                    <li><span class="anchor-text">Extraction:</span> pull data from PostgreSQL</li>
+                    <li><span class="anchor-text">Load:</span> load data into BigQuery</li>
+                    <li><span class="anchor-text">Transform: :</span> process or clean data as required</li>
                    </ul> 
                 <h4>Key Components</h4>
                 <ul>
@@ -81,12 +81,12 @@
                 <h4 class="project-header">Data Ingestion</h4>
                 <h4>Creating elt/etl user & granting permissions</h4>
                 <p>
-                    GRANT USAGE ON SCHEMA operations TO etl_b085954: grants the etl_b085954 user permission to access the operations schema. 
-                    GRANT SELECT ON ALL TABLES IN SCHEMA operations TO etl_b085954: grants the user read (SELECT) access to all tables in the operations schema.
+                    <span class="anchor-text">GRANT USAGE ON SCHEMA operations TO etl_b085954:</span> grants the etl_b085954 user permission to access the operations schema. 
+                    <span class="anchor-text">GRANT SELECT ON ALL TABLES IN SCHEMA operations TO etl_b085954:</span> grants the user read (SELECT) access to all tables in the operations schema.
                 </p>
                 <div class="code">
                     <pre class="py-code">
-                        <code>
+                        <code class="code-font">
                 <span class="code-comment">1. Connect to PostgreSQL</span>
                 $ sudo -u postgres psql
                 <span class="code-comment">2. Create ETL/ELT User</span>
@@ -100,7 +100,7 @@
                 <h4>config.yaml</h4>
                 <p>Configuration yaml defines the source (PostgreSQL), destination (BigQuery), and logging setup.</p>
                 <pre class="code">
-					<code style="margin: 0; padding: 0;">
+					<code class="code-font">
 		<span class="code-func">postgres:</span>
 			type: <span class="code-text">"postgresql"</span>
 			host: <span class="code-text">"localhost"</span>
@@ -123,10 +123,11 @@
 			filemode: <span class="code-text">"a"</span>
 					</code>
                 </pre>
-                <h4>config loader</h4>
+                <!-- Config Loader -->
+                <h4>config_loader.py</h4>
                 <p>Load configuration from a YAML file. return: Configuration dictionary. FileNotFoundError: If the configuration file is not found </p>
                 <pre class="code">
-                    <code style="margin: 0; padding: 0;">
+                    <code class="code-font">
             <span class="py-method">import</span>  yaml
 
             <span class="code-func">class</span> <span class="brown-highlight">ConfigLoader:</span>
@@ -134,17 +135,38 @@
                     <span class="py-method">self</span>.config_path = config_path
                     <span class="py-method">self</span>.config = <span class="py-method">self</span>.load_config()
 
-            <span class="code-func">def</span> <span class="brown-highlight">load_config</span>(<span class="py-method">self</span>) -> <span class="py-method">None:</span>
-            <span class="py-method">if</span> <span class="code-func">not</span> os.path.exists(self.config_path):
-            <span class="py-method">raise</span> FileNotFoundError(
-                f<span class="code-text">"Configuration file '{config_path}' not found."</span>)
+            <span class="code-func">def</span> <span                class="brown-highlight">load_config</span>(<span class="py-method">self</span>) -> <span class="py-method">None:</span>
+                    <span class="py-method">if</span> <span class="code-func">not</span> os.path.exists(self.config_path):
+                            <span class="py-method">raise</span> FileNotFoundError(
+                                    f<span class="code-text">"Configuration file '{config_path}' not found."</span>)
 
             <span class="py-method">with</span> open(<span class="py-method">self</span>.config_path, <span class="code-text">'r'</span>) as file:
-            <span class="py-method">try:</span>
-                config = yaml.safe_load(file)
-            <span class="py-method">except:</span> yaml.YAMLError as exc:
-                <span class="py-method">raise:</span> Exception(f<span class="code-text">"Error parsing YAML file: {exc}"</span>)
-            <span class="py-method">return</span> config
+                    <span class="py-method">try:</span>
+                            config = yaml.safe_load(file)
+                    <span class="py-method">except:</span> yaml.YAMLError as exc:
+                            <span class="py-method">raise:</span> Exception(f<span class="code-text">"Error parsing YAML file: {exc}"</span>)
+                    <span class="py-method">return</span> config
+                    </code>
+                </pre>
+                <!-- Requrement.txt -->
+                <h4>requirement.txt</h4>
+                <pre class="code">
+                    <code class="code-font">
+        pandas => 2.2.3 
+        requests
+        sqlalchemy ==  2.0.36
+        logging
+        pyyaml
+        os
+        google-cloud-bigquery
+                    </code>
+                </pre>
+
+                <!-- Installing requirenet.txt -->
+                <pre class="code">
+                    <code class="code-font">
+        <span class="code-comment">Installing requirements.txt</span> 
+        $ pip install -r requirements.txt
                     </code>
                 </pre>
             </div>

@@ -67,14 +67,12 @@ pre {
   color: #c7934e;
 }
 
-display: flex;
-    border: 1px solid rgb(229, 229, 229);
-    padding: 16px;
-    overflow-x: auto;
-    border-radius: 4px;
-    background: rgb(249, 249, 249);
-    color:#545454;
-    overflow-wrap: break-word;
-    max-width: 70%;
-    margin: 30px auto;
-    font-size: 16px;
+.code-font {
+  font-size: 1rem;
+  color: #50545c;
+}
+
+ul {
+  margin-left: 4rem;
+  font-weight: 300;
+}
