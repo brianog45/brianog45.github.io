@@ -59,7 +59,7 @@
             <div class="about-contents">
                 <h4 class="project-header">Architecture Planning</h4>
                 <p>
-                    The goal is to build a pipeline that pulls data from PostgreSQL database, transforms it, and loads it into a data warehouse (Azure Synapse Analytics | BigQuery) for analytics and reporting.  The data pipeline will consist of two main phases:
+                    The goal is to build a pipeline that pulls data from PostgreSQL database, transforms it, and loads it into a data warehouse (Azure Synapse Analytics | BigQuery) for analytics and reporting.  The data pipeline will consist of three main phases:
                 </p>
                 <ul>
                     <li><span class="anchor-text">Extraction:</span> pull data from PostgreSQL</li>
@@ -69,9 +69,9 @@
                 <h4>Key Components</h4>
                 <ul>
                     <li>Source Database: PostgreSQL</li>
+                    <li>Storage: Google Cloud Storage (GCS)</li>
                     <li>Destination: BigQuery</li>
                     <li>Script: Python</li>
-                    <li>Storage: Google Cloud Storage</li>
                 </ul>
             </div>
         </section>
@@ -171,6 +171,12 @@
                 </pre>
                 <!-- PostgreSQL -->
                  <h4>PostgreSQL.py</h4>
+                 <p class="paragraph-ident">
+                    :extracts data from a PostgreSQL database. <br>
+                    :param file_path: Path to the YAML configuration file. <br>
+                    :return: pandas DataFrame. <br>
+                    :raises ExceptionError: If the extraction fails. <br>
+                    </p>
                 <pre class="code">
                     <code class="code-font">
         <span class="py-method">from</span> sqlalchemy <span class="py-method">import</span> create_engine
@@ -183,14 +189,6 @@
                 self.logging = logging
 
             <span class="code-func">def</span> <span class="brown-highlight">extract</span></span>(<span class="code-func">self</span>) -> <span class="py-method">pd.DataFrame:</span>
-                <span class="code-text">
-                """
-                :extracts data from a PostgreSQL database.
-                :param file_path: Path to the YAML configuration file
-                :return: pandas DataFrame
-                :raises ExceptionError: If the extraction fails
-                """</span> 
-
                 db_config = <span class="py-method">self</span>.config[<span class="code-text">'postgres'</span>]
                 <span class="py-method">try:</span> 
                     engine_url =
