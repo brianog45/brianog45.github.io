@@ -79,7 +79,10 @@
         <section id="Data Ingestion">
             <div class="about-contents">
                 <h4 class="project-header">Data Ingestion</h4>
-                <h4>Creating elt/etl user & granting permissions</h4>
+                <p>
+                  Python classes help to break the project into manageable tasks. Python classes can significantly improve code organization, reusability, and scalability. It also ensures separation of concerns, making it easier to scale the ETL/ELT processes, debug issues, and onboard new team members.   I'll use classes to break the project into three manageable tasks; extract, load, transform.
+                </p>
+                <h3>Step 1: <br>Creating elt/etl user & granting permissions</h3>
                 <p>
                     <span class="anchor-text">GRANT USAGE ON SCHEMA operations TO etl_b085954:</span> grants the etl_b085954 user permission to access the operations schema. 
                     <span class="anchor-text">GRANT SELECT ON ALL TABLES IN SCHEMA operations TO etl_b085954:</span> grants the user read (SELECT) access to all tables in the operations schema.
@@ -97,7 +100,7 @@
                         </code>
                     </pre>
                 </div>
-                <h4>config.yaml</h4>
+                <h3>Step 2: <br>Configuration Setup (config.yaml)</h3>
                 <p>Configuration yaml defines the source (PostgreSQL), destination (BigQuery), and logging setup.</p>
                 <pre class="code">
 					<code class="code-font">
